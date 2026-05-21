@@ -1,0 +1,22 @@
+name: Tenant Config Validation
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Install PowerShell modules
+      run: |
+        Install-Module Microsoft.Graph -Scope CurrentUser -Force
+
+    - name: Run validation
+      run: |
+        pwsh scripts/connect-graph.ps1
+        pwsh scripts/compare-config.ps1
